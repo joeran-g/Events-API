@@ -77,7 +77,7 @@ jobs:
 
       - name: Trigger Render deploy hook
         run: |
-          curl -X POST "${{ secrets.RENDER_BASE_URL }}${{ secrets.RENDER_DEPLOY_HOOK }}" \
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}" \
             -H "Content-Type: application/json"
 
       - name: Wait for Render deployment

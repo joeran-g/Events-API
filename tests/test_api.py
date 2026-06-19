@@ -71,7 +71,7 @@ def test_create_event_without_authentication_returns_401():
     assert create_response.status_code == 401
 
 def test_rsvp_without_authentication_returns_401():
-    event_id = 1
+    event_id = 2
     json_data = {"attending": True}
     rsvps_response = requests.post(f"{BASE_URL}/rsvps/event/{event_id}", json=json_data)
     assert rsvps_response.status_code == 401

@@ -50,43 +50,43 @@ jobs:
         run: docker stop events-api && docker rm events-api
 
 
-        deploy:
-          needs: test
-          if: success()
-          runs-on: ubuntu-latest
-          environment: production
+  deploy:
+    needs: test
+    if: success()
+    runs-on: ubuntu-latest
+    environment: production
 
-          steps:
-            - name: Check out code
-              uses: actions/checkout@v3
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-            - name: Log in to Docker Hub
-              uses: docker/login-action@v3
-              with:
-              username: ${{ secrets.DOCKERHUB_USERNAME }}
-              password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
-            - name: Build and push Docker image
-              run: |
-                docker buildx build --platform linux/amd64 \
-                  --tag "${{ secrets.DOCKERHUB_USERNAME }}/events-api:latest" \
-                  --push .
+      - name: Build and push Docker image
+        run: |
+          docker buildx build --platform linux/amd64 \
+            --tag "${{ secrets.DOCKERHUB_USERNAME }}/events-api:latest" \
+            --push .
 
-            - name: Trigger Render deploy hook
-              run: |
-                curl -X POST "${{ secrets.RENDER_BASE_URL }}${{ secrets.RENDER_DEPLOY_HOOK }}" \
-                  -H "Content-Type: application/json"
+      - name: Trigger Render deploy hook
+        run: |
+          curl -X POST "${{ secrets.RENDER_BASE_URL }}${{ secrets.RENDER_DEPLOY_HOOK }}" \
+            -H "Content-Type: application/json"
 
-            - name: Wait for Render deployment
-              run: sleep 15
+      - name: Wait for Render deployment
+        run: sleep 15
 
-            - name: Health check for Render deployment
-              run: |
-                RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.RENDER_BASE_URL }}/api/health")
-                if [ "$RESPONSE" -ne 200 ]; then
-                  echo "Health check failed with response code: $RESPONSE"
-                  exit 1
-                fi
+      - name: Health check for Render deployment
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.RENDER_BASE_URL }}/api/health")
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Health check failed with response code: $RESPONSE"
+            exit 1
+          fi

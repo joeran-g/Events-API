@@ -36,7 +36,13 @@ jobs:
       
       - name: Health check
         run: curl -f http://localhost:5001/api/health || exit 1
-      
+
+      - name: Run API tests
+        run: pytest -v
+
+      - name: Install dependencies for model tests
+        run: pip install -r requirements.txt
+
       - name: Cleanup
         if: always()
         run: docker stop events-api && docker rm events-api

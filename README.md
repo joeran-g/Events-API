@@ -41,13 +41,13 @@ pip install -r requirements.txt
 python app.py
 ```
 
-The API will be available at `http://localhost:5000`
+The API will be available at `http://localhost:5001`
 
 ## Swagger UI Documentation
 
 The API includes interactive Swagger UI documentation. After starting the server:
 
-1. Open your browser and navigate to: `http://localhost:5000/apidocs`
+1. Open your browser and navigate to: `http://localhost:5001/apidocs`
 
 2. You'll see an interactive API documentation interface where you can:
    - Browse all available endpoints

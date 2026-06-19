@@ -1,7 +1,7 @@
 import requests
 import time
 
-BASE_URL = "http://localhost:5001/api"
+BASE_URL = "http://localhost:5000/api"
 UNIQUE_USERNAME = f"user_{int(time.time())}"
 
 # Unit tests

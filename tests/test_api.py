@@ -74,17 +74,18 @@ def test_create_event_without_authentication_returns_401():
 def create_private_event():
     event_data = {
                 "id": 2,
-                "title": "Python Meetup",
-                "description": "Monthly Python developer meetup",
+                "title": "Private Meetup",
+                "description": "Monthly Private developer meetup",
                 "date": "2026-01-15T18:00:00",
-                "location": "Tech Hub, Room 101",
-                "capacity": 50,
+                "location": "Tech Hub, Room 111",
+                "capacity": 5,
                 "is_public": False
                 }
     token = get_jwt_token()
     create_response = requests.post(f"{BASE_URL}/events", json=event_data, headers={"Authorization": f"Bearer {token}"})
 
 def test_rsvp_without_authentication_returns_401():
+    create_private_event()
     event_id = 2
     json_data = {"attending": True}
     rsvps_response = requests.post(f"{BASE_URL}/rsvps/event/{event_id}", json=json_data)
